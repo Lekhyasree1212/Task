@@ -3,176 +3,141 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Colorful Quiz</title>
+  <title>Contact Form & To-Do List</title>
   <style>
-    body {
+    * {
+      box-sizing: border-box;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #f9d423, #ff4e50);
+    }
+
+    body {
       margin: 0;
-      padding: 20px;
-      color: #333;
-      min-height: 100vh;
+      padding: 0;
+      background: linear-gradient(135deg, #f6d365, #fda085, #a1c4fd, #c2e9fb);
+      background-size: 400% 400%;
+      animation: gradient 15s ease infinite;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    h1 {
-      text-align: center;
-      color: #ffffff;
-      text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
-      margin-bottom: 40px;
+    @keyframes gradient {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
     }
 
-    section {
-      background: rgba(255, 255, 255, 0.95);
+    .container {
+      display: flex;
+      gap: 30px;
+      background: rgba(255, 255, 255, 0.9);
       padding: 30px;
-      margin: 20px auto;
-      max-width: 600px;
-      border-radius: 15px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      flex-wrap: wrap;
     }
 
-    button {
-      margin: 10px 10px 0 0;
-      padding: 12px 20px;
-      font-size: 16px;
-      background: linear-gradient(to right, #4facfe, #00f2fe);
+    .form-container, .todo-container {
+      flex: 1 1 300px;
+      min-width: 280px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    form input, form textarea, form button, .todo-container input, .todo-container button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    form button, .todo-container button {
+      background-color: #007bff;
       color: white;
       border: none;
-      border-radius: 8px;
       cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-      transition: background 0.3s ease;
     }
 
-    button:hover {
-      background: linear-gradient(to right, #43e97b, #38f9d7);
+    form button:hover, .todo-container button:hover {
+      background-color: #0056b3;
     }
 
-    #quiz-result {
-      margin-top: 15px;
-      font-weight: bold;
-      font-size: 18px;
+    ul {
+      list-style: none;
+      padding: 0;
     }
 
-    #joke-output {
-      margin-top: 15px;
-      font-style: italic;
-      font-size: 16px;
+    li {
+      background-color: #e0f7fa;
+      padding: 10px;
+      margin-bottom: 8px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    @media (max-width: 768px) {
-      body {
-        background: linear-gradient(135deg, #70e1f5, #ffd194);
-      }
+    .delete-btn {
+      background-color: #ff6b6b;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
 
-      h1 {
-        font-size: 24px;
-      }
-
-      button {
-        width: 100%;
-        margin-bottom: 10px;
-      }
+    .delete-btn:hover {
+      background-color: #ff3b3b;
     }
   </style>
 </head>
 <body>
+  <div class="container">
+    <!-- Contact Form -->
+    <div class="form-container">
+      <h2>Contact Form</h2>
+      <form id="contactForm">
+        <input type="text" placeholder="Your Name" required />
+        <input type="email" placeholder="Your Email" required />
+        <textarea placeholder="Your Message" rows="4" required></textarea>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
 
-  <h1>Colorful Quiz App</h1>
-
-  <!-- Quiz Section -->
-  <section id="quiz-section">
-    <h2 id="question">Question will appear here...</h2>
-    <div id="options"></div>
-    <p id="quiz-result"></p>
-    <button id="next-btn" onclick="nextQuestion()">Next Question</button>
-  </section>
-
-  <!-- Joke Section -->
-  <section id="joke-section">
-    <h2>😂 Need a Laugh?</h2>
-    <button onclick="showRandomJoke()">Get a Random Joke</button>
-    <p id="joke-output"></p>
-  </section>
+    <!-- To-Do List -->
+    <div class="todo-container">
+      <h2>To-Do List</h2>
+      <input type="text" id="todoInput" placeholder="Enter a new task" />
+      <button onclick="addTask()">Add Task</button>
+      <ul id="todoList"></ul>
+    </div>
+  </div>
 
   <script>
-    const quizData = [
-      { question: "What is the capital of France?", options: ["Paris", "London", "Berlin"], answer: "Paris" },
-      { question: "Which planet is known as the Red Planet?", options: ["Earth", "Mars", "Jupiter"], answer: "Mars" },
-      { question: "Who wrote 'Romeo and Juliet'?", options: ["William Shakespeare", "Mark Twain", "Charles Dickens"], answer: "William Shakespeare" },
+    // Contact Form Submission (Optional logic)
+    document.getElementById('contactForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      alert('Form submitted successfully!');
+      this.reset();
+    });
 
-    ];
+    // To-Do List Logic
+    function addTask() {
+      const input = document.getElementById('todoInput');
+      const taskText = input.value.trim();
+      if (taskText === '') return;
 
-    const jokes = [
-      "Why don’t programmers like nature? Because it has too many bugs.",
-      "Why do Java developers wear glasses? Because they don't C#.",
-      "A SQL query walks into a bar, walks up to two tables and asks: 'Can I join you?'",
-      "Why was the JavaScript developer sad? Because he didn’t Node how to Express himself.",
-      "What do you call 8 hobbits? A hobbyte.",
-      "Debugging: Being the detective in a crime movie where you are also the murderer."
-    ];
-
-    let currentQuestion = 0;
-    let score = 0;
-
-    function loadQuestion() {
-      const quiz = quizData[currentQuestion];
-      document.getElementById("question").textContent = `Q${currentQuestion + 1}: ${quiz.question}`;
-
-      const optionsDiv = document.getElementById("options");
-      optionsDiv.innerHTML = "";
-
-      quiz.options.forEach(option => {
-        const btn = document.createElement("button");
-        btn.textContent = option;
-        btn.onclick = () => checkAnswer(option, btn);
-        optionsDiv.appendChild(btn);
-      });
-
-      document.getElementById("quiz-result").textContent = "";
+      const li = document.createElement('li');
+      li.innerHTML = `${taskText} <button class="delete-btn" onclick="this.parentElement.remove()">Delete</button>`;
+      document.getElementById('todoList').appendChild(li);
+      input.value = '';
     }
-
-    function checkAnswer(selectedOption, btn) {
-      const correct = quizData[currentQuestion].answer;
-      const result = document.getElementById("quiz-result");
-
-      if (selectedOption === correct) {
-        result.textContent = "✅ Correct!";
-        result.style.color = "green";
-        score++;
-      } else {
-        result.textContent = `❌ Wrong! Correct answer: ${correct}`;
-        result.style.color = "red";
-      }
-
-      // Disable all buttons
-      document.querySelectorAll("#options button").forEach(b => b.disabled = true);
-    }
-
-    function nextQuestion() {
-      currentQuestion++;
-      if (currentQuestion < quizData.length) {
-        loadQuestion();
-      } else {
-        const randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
-
-        document.getElementById("question").textContent = "🎉 You've completed the quiz!";
-        document.getElementById("options").innerHTML = `
-          <p>Your Score: ${score} / ${quizData.length}</p>
-          <p style="margin-top: 20px; font-style: italic;">😂 Joke of the day:<br>👉 ${randomJoke}</p>
-        `;
-        document.getElementById("quiz-result").textContent = "";
-        document.getElementById("next-btn").style.display = "none";
-      }
-    }
-
-    function showRandomJoke() {
-      const randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
-      document.getElementById("joke-output").textContent = "👉 " + randomJoke;
-    }
-
-    // Start quiz on load
-    loadQuestion();
   </script>
-
 </body>
 </html>

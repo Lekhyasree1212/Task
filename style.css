@@ -1,52 +1,78 @@
+/* Vibrant Gradient Background */
 body {
-  font-family: Arial, sans-serif;
-  background: #f0f4f8;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #f9d423, #ff4e50);
+  margin: 0;
+  padding: 20px;
+  color: #333;
+  min-height: 100vh;
 }
 
-.todo-container {
-  background: white;
-  padding: 20px 30px;
-  border-radius: 12px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.1);
-  width: 300px;
+/* Title */
+h1 {
+  text-align: center;
+  color: #ffffff;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+  margin-bottom: 40px;
 }
 
-input[type="text"] {
-  width: 100%;
-  padding: 8px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+/* Card-Style Sections */
+section {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 30px;
+  margin: 20px auto;
+  max-width: 600px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s;
 }
 
+section:hover {
+  transform: translateY(-5px);
+}
+
+/* Buttons */
 button {
-  padding: 8px 12px;
-  background: #007BFF;
+  margin: 10px 5px 10px 0;
+  padding: 12px 20px;
+  font-size: 16px;
+  background: linear-gradient(to right, #4facfe, #00f2fe);
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s ease;
 }
 
 button:hover {
-  background: #0056b3;
+  background: linear-gradient(to right, #43e97b, #38f9d7);
 }
 
-ul {
-  list-style: none;
-  padding: 0;
+/* Quiz Result Text */
+#quiz-result, #joke {
+  margin-top: 15px;
+  font-weight: bold;
+  font-size: 18px;
 }
 
-li {
-  background: #e9ecef;
-  padding: 8px;
-  border-radius: 4px;
-  margin-top: 5px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+/* Options Container */
+#options button {
+  display: inline-block;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  body {
+    background: linear-gradient(135deg, #70e1f5, #ffd194);
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
 }

@@ -3,16 +3,176 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Simple To-Do List</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Colorful Quiz</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f9d423, #ff4e50);
+      margin: 0;
+      padding: 20px;
+      color: #333;
+      min-height: 100vh;
+    }
+
+    h1 {
+      text-align: center;
+      color: #ffffff;
+      text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+      margin-bottom: 40px;
+    }
+
+    section {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 30px;
+      margin: 20px auto;
+      max-width: 600px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    button {
+      margin: 10px 10px 0 0;
+      padding: 12px 20px;
+      font-size: 16px;
+      background: linear-gradient(to right, #4facfe, #00f2fe);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: linear-gradient(to right, #43e97b, #38f9d7);
+    }
+
+    #quiz-result {
+      margin-top: 15px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    #joke-output {
+      margin-top: 15px;
+      font-style: italic;
+      font-size: 16px;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        background: linear-gradient(135deg, #70e1f5, #ffd194);
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      button {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div class="todo-container">
-    <h1>To-Do List</h1>
-    <input type="text" id="taskInput" placeholder="Enter a new task" />
-    <button onclick="addTask()">Add Task</button>
-    <ul id="taskList"></ul>
-  </div>
-  <script src="script.js"></script>
+
+  <h1>Colorful Quiz App</h1>
+
+  <!-- Quiz Section -->
+  <section id="quiz-section">
+    <h2 id="question">Question will appear here...</h2>
+    <div id="options"></div>
+    <p id="quiz-result"></p>
+    <button id="next-btn" onclick="nextQuestion()">Next Question</button>
+  </section>
+
+  <!-- Joke Section -->
+  <section id="joke-section">
+    <h2>😂 Need a Laugh?</h2>
+    <button onclick="showRandomJoke()">Get a Random Joke</button>
+    <p id="joke-output"></p>
+  </section>
+
+  <script>
+    const quizData = [
+      { question: "What is the capital of France?", options: ["Paris", "London", "Berlin"], answer: "Paris" },
+      { question: "Which planet is known as the Red Planet?", options: ["Earth", "Mars", "Jupiter"], answer: "Mars" },
+      { question: "Who wrote 'Romeo and Juliet'?", options: ["William Shakespeare", "Mark Twain", "Charles Dickens"], answer: "William Shakespeare" },
+
+    ];
+
+    const jokes = [
+      "Why don’t programmers like nature? Because it has too many bugs.",
+      "Why do Java developers wear glasses? Because they don't C#.",
+      "A SQL query walks into a bar, walks up to two tables and asks: 'Can I join you?'",
+      "Why was the JavaScript developer sad? Because he didn’t Node how to Express himself.",
+      "What do you call 8 hobbits? A hobbyte.",
+      "Debugging: Being the detective in a crime movie where you are also the murderer."
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function loadQuestion() {
+      const quiz = quizData[currentQuestion];
+      document.getElementById("question").textContent = `Q${currentQuestion + 1}: ${quiz.question}`;
+
+      const optionsDiv = document.getElementById("options");
+      optionsDiv.innerHTML = "";
+
+      quiz.options.forEach(option => {
+        const btn = document.createElement("button");
+        btn.textContent = option;
+        btn.onclick = () => checkAnswer(option, btn);
+        optionsDiv.appendChild(btn);
+      });
+
+      document.getElementById("quiz-result").textContent = "";
+    }
+
+    function checkAnswer(selectedOption, btn) {
+      const correct = quizData[currentQuestion].answer;
+      const result = document.getElementById("quiz-result");
+
+      if (selectedOption === correct) {
+        result.textContent = "✅ Correct!";
+        result.style.color = "green";
+        score++;
+      } else {
+        result.textContent = `❌ Wrong! Correct answer: ${correct}`;
+        result.style.color = "red";
+      }
+
+      // Disable all buttons
+      document.querySelectorAll("#options button").forEach(b => b.disabled = true);
+    }
+
+    function nextQuestion() {
+      currentQuestion++;
+      if (currentQuestion < quizData.length) {
+        loadQuestion();
+      } else {
+        const randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
+
+        document.getElementById("question").textContent = "🎉 You've completed the quiz!";
+        document.getElementById("options").innerHTML = `
+          <p>Your Score: ${score} / ${quizData.length}</p>
+          <p style="margin-top: 20px; font-style: italic;">😂 Joke of the day:<br>👉 ${randomJoke}</p>
+        `;
+        document.getElementById("quiz-result").textContent = "";
+        document.getElementById("next-btn").style.display = "none";
+      }
+    }
+
+    function showRandomJoke() {
+      const randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
+      document.getElementById("joke-output").textContent = "👉 " + randomJoke;
+    }
+
+    // Start quiz on load
+    loadQuestion();
+  </script>
+
 </body>
 </html>

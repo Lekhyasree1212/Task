@@ -1,23 +1,24 @@
-function addTask() {
-  const input = document.getElementById('taskInput');
-  const taskText = input.value.trim();
-
-  if (taskText === '') {
-    alert('Please enter a task!');
-    return;
+// Step 2: Quiz Logic
+function checkAnswer(answer) {
+  const result = document.getElementById("quiz-result");
+  if (answer === 'A') {
+    result.textContent = "✅ Correct! Paris is the capital of France.";
+    result.style.color = "green";
+  } else {
+    result.textContent = "❌ Incorrect. Try again!";
+    result.style.color = "red";
   }
+}
 
-  const taskList = document.getElementById('taskList');
-
-  const listItem = document.createElement('li');
-  listItem.textContent = taskText;
-
-  const deleteBtn = document.createElement('button');
-  deleteBtn.textContent = '❌';
-  deleteBtn.onclick = () => listItem.remove();
-
-  listItem.appendChild(deleteBtn);
-  taskList.appendChild(listItem);
-
-  input.value = '';
+// Step 3: Fetch Joke from Joke API
+function fetchJoke() {
+  fetch("https://official-joke-api.appspot.com/random_joke")
+    .then((response) => response.json())
+    .then((data) => {
+      const joke = `${data.setup} - ${data.punchline}`;
+      document.getElementById("joke").textContent = joke;
+    })
+    .catch((error) => {
+      document.getElementById("joke").textContent = "⚠️ Failed to fetch a joke.";
+    });
 }
